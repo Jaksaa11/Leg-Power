@@ -2,12 +2,22 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
+    public static GameManager instance;
     public int legPower {  get; private set; }
-    public int basePower;
-    [SerializeField] private Animator anim;
+    private int basePower;
+    
     private void Start()
     {
-        legPower = 0;
+        if (instance == null)
+        {
+            instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+            legPower = 0;
         basePower = 1;
     }
 
@@ -16,10 +26,5 @@ public class GameManager : MonoBehaviour
         legPower += basePower * amp;
     }
 
-    public void Squat()
-    {
-        AddLegPower(1);
-        anim.SetTrigger("Squat");
-        Debug.Log(legPower.ToString()); 
-    }
+ 
 }
