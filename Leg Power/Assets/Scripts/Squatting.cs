@@ -1,12 +1,18 @@
+using System.Collections;
+using System.Linq;
+using TMPro;
 using Unity.VisualScripting;
 using UnityEditor.Animations;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Squatting : MonoBehaviour
 {
     [SerializeField] private Animator anim;
     [SerializeField] private Sprite[] liftings;
     [SerializeField] private GameObject child;
+    [SerializeField] private Button butt;
+    
     private SpriteRenderer childSprite;
     private int baseAmp;
     private int nextSquat;
@@ -19,11 +25,8 @@ public class Squatting : MonoBehaviour
         baseAmp = 1;
         i = 0;
         childSprite = child.GetComponent<SpriteRenderer>();
-        Debug.Log(liftings.Length);
-        if (liftings.Length>0)
-        {
-            childSprite.sprite = liftings[0];
-        }
+        
+    
     }
 
     private int ChangeLifiting()
@@ -47,8 +50,15 @@ public class Squatting : MonoBehaviour
     {
         
         anim.SetTrigger("Squat");
-        GameManager.instance.AddLegPower(ChangeLifiting());
-        Debug.Log(GameManager.instance.legPower.ToString());
+        GameManager.instance.AddLegPower();
+        GameManager.instance.ChangePowerText();
+        StartCoroutine(Wait(0.38f));
+    }
 
+    private IEnumerator Wait(float delay)
+    {
+        butt.enabled = false;
+        yield return new WaitForSeconds(delay);
+        butt.enabled = true;
     }
 }
