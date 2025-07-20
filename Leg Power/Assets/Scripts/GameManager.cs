@@ -7,7 +7,6 @@ public class GameManager : MonoBehaviour
     public int legPower {  get; private set; }
     public int basePower { get; private set; }
     public int amp;
-    public TextMeshProUGUI powerText;
     public bool prestige {  get; private set; }
     public int prestigeCount;
 
@@ -15,29 +14,32 @@ public class GameManager : MonoBehaviour
     {
         if (instance == null)
         {
-            instance = this;
-            DontDestroyOnLoad(gameObject);
+            instance = this;            
         }
-        else
-        {
-            Destroy(gameObject);
-        }
+       
+       
             legPower = 0;
         amp = 1;
-        powerText.text = "Leg Power: " + legPower;
         basePower = 1;
     }
-    public void ChangePowerText()
-    {
-        powerText.text = "Leg Power:" + legPower;
-    }
+ 
     public void ChangeBasePower(int newPower)
     {
         basePower = newPower;
     }
     public void AddLegPower()
     {
-        legPower += basePower*amp;
+        if (legPower + (basePower * amp) < 10000000)
+            legPower += basePower * amp;
+        else if (legPower + (basePower * amp) > 10000000)
+            legPower = 10000000;
+        else if (legPower + (basePower * amp) < 0)
+            legPower = 10000000;
+
+        if (legPower >= 10000000)
+        {
+            UIManager.Instance.WinMenu();
+        }
     }
 
     public void RemoveLegPower(int amount)

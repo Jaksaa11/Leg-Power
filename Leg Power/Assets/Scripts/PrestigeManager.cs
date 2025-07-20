@@ -1,5 +1,6 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class PrestigeManager : MonoBehaviour
@@ -17,7 +18,7 @@ public class PrestigeManager : MonoBehaviour
         if (GameManager.instance.prestigeCount == 0)
         {
             prestigeNumber.text = "Prestige " + GameManager.instance.prestigeCount + 1;
-            Conditions.text = "\n-Buy a Police car \n\n-Have over 10000 Leg Power";
+            Conditions.text = "\n-Buy a Police car \n\n-Have over 10000 Leg Power\n\n-Gives 5x amplifier";
         }
     }
 
@@ -33,9 +34,17 @@ public class PrestigeManager : MonoBehaviour
             if (GameManager.instance.prestige == true && GameManager.instance.legPower > 1000000)
                 prestigeButton.interactable = true;
         }
-       
+
+        if (prestigeButton.interactable == false)
+        {
+            prestigeButton.GetComponent<EventTrigger>().enabled = false;
+        }
+        else if (prestigeButton.interactable == true)
+        {
+            prestigeButton.GetComponent<EventTrigger>().enabled = true;
+        }
     }
-   
+
     public void Prestige()
     {
         GameManager.instance.RemoveLegPower(GameManager.instance.legPower);
@@ -47,16 +56,17 @@ public class PrestigeManager : MonoBehaviour
         prestigeButton.interactable = false;
         UIManager.Instance.ChangeAmplifierText();
         UIManager.Instance.ChangeBasePowerText();
-        GameManager.instance.ChangePowerText();
+        UIManager.Instance.ChangePowerText();
         for (int i = 0; i < buyButtons.Length; i++)
         {
             buyButtons[i].interactable = true;
             buyButtons[i].transform.parent.GetComponent<ShopItem>().bought = false;
+            buyButtons[i].transform.parent.GetComponent<ShopItem>().marked = false;
         }
         if (GameManager.instance.prestigeCount == 1)
         {
             prestigeNumber.text = "Prestige " + (GameManager.instance.prestigeCount + 1);
-            Conditions.text = "\n-Buy a Truck Tank \n\n-Have over 1000000 Leg Power";
+            Conditions.text = "\n-Buy a Truck Tank \n\n-Have over 1000000 Leg Power\n\n-Gives 5x amplifier";
         }
         else
         {

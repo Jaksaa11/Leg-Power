@@ -5,22 +5,24 @@ using UnityEngine.UI;
 public class ShopItem : MonoBehaviour
 {
     public static ShopItem instance;
-    [SerializeField] private string itemName;
+    [SerializeField] public string itemName;
     [SerializeField] public int price;
     [SerializeField] public Sprite itemSprite;
     [SerializeField] public Button buyButton;
     [SerializeField] public int legPowerBonus;
     [SerializeField] private SpriteRenderer spriteEquip;
-    public bool planet;
+    [SerializeField] private AudioClip buttonPress;
     public bool bought;
-    private bool equipped;
+    public bool marked;
    
     private void Start()
     {
         instance = this;
         if (buyButton != null)
         {
-                buyButton.onClick.AddListener(BuyItem);
+            buyButton.onClick.AddListener(BuyItem);
+            //buyButton.onClick.AddListener(() => SoundManager.instance.PlaySound(buttonPress));
+           
         }
 
     }
@@ -38,6 +40,7 @@ public class ShopItem : MonoBehaviour
                 buyButton.GetComponentInChildren<TextMeshProUGUI>().text = "Equip";
                 buyButton.interactable = true;
                 buyButton.onClick.RemoveAllListeners();
+                //buyButton.onClick.AddListener(() => SoundManager.instance.PlaySound(buttonPress));
                 buyButton.onClick.AddListener(Equip);
             }
         }
@@ -45,6 +48,7 @@ public class ShopItem : MonoBehaviour
         {
             buyButton.GetComponentInChildren<TextMeshProUGUI>().text = "Buy";
             buyButton.onClick.RemoveAllListeners();
+            //buyButton.onClick.AddListener(() => SoundManager.instance.PlaySound(buttonPress));
             buyButton.onClick.AddListener(BuyItem);
         }
         
@@ -66,11 +70,7 @@ public class ShopItem : MonoBehaviour
                     GameManager.instance.PrestigeStatus(true);
                 }
             }
-            if (itemName == "Planet")
-            {
-                planet = true;
-                BackgroundChange.instance.Change();
-            }
+            
         
       
     }

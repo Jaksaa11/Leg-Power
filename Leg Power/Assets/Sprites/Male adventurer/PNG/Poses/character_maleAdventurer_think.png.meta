@@ -147,7 +147,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      character_maleAdventurer_think_0: -2648431869212745264
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
